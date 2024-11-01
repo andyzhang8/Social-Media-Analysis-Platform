@@ -1,0 +1,28 @@
+import pandas as pd
+from db.mongo_setup import get_collection
+
+tweets_collection = get_collection("tweets")
+
+def fetch_data_from_csv(file_path):
+    """Fetch data from the Sentiment140 CSV file and store it in MongoDB."""
+    df = pd.read_csv(file_path, encoding='ISO-8859-1', header=None)
+    df.columns = ["target", "ids", "date", "flag", "user", "text"]
+
+    # 0=negative, 2=neutral, 4=positive
+    sentiment_map = {0: "negative", 2: "neutral", 4: "positive"}
+    df["target"] = df["target"].map(sentiment_map)
+
+    for _, row in df.iterrows():
+        tweet_data = {
+            "user_name": row["user"],
+            "text": row["text"],
+            "created_at": row["date"],
+            "sentiment": row["target"]
+        }
+        tweets_collection.insert_one(tweet_data)
+        print(f"Stored tweet from {tweet_data['user_name']} with sentiment {tweet_data['sentiment']}.")
+
+if __name__ == "__main__":
+    file_path = os.path.join(base_dir, "../Sentiment140/training.1600000.processed.noemoticon.csv")
+    fetch_data_from_csv(file_path)
+    print("Data fetching and storing complete.")

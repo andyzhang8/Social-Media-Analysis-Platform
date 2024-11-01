@@ -1,0 +1,23 @@
+import pymongo
+
+# MongoDB config
+MONGO_URI = "mongodb://localhost:27017"
+DB_NAME = "social_media_analysis"
+
+def get_mongo_client():
+    """Initializes and returns the MongoDB client."""
+    return pymongo.MongoClient(MONGO_URI)
+
+def get_database():
+    """Returns the specified MongoDB database."""
+    client = get_mongo_client()
+    return client[DB_NAME]
+
+def get_collection(collection_name):
+    """Returns the specified collection from MongoDB."""
+    db = get_database()
+    return db[collection_name]
+
+if __name__ == "__main__":
+    db = get_database()
+    print(f"Connected to database: {db.name}")

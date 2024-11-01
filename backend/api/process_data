@@ -1,0 +1,27 @@
+import re
+from db.mongo_setup import get_collection
+
+tweets_collection = get_collection("tweets")
+
+def preprocess_text(text):
+    """Clean and preprocess tweet text."""
+    text = re.sub(r"http\S+", "", text)  # Remove URLs
+    text = re.sub(r"@\w+", "", text)     # Remove mentions
+    text = re.sub(r"#", "", text)        # Remove hashtag
+    text = text.strip()
+    return text
+
+def preprocess_tweets():
+    """Fetch tweets from MongoDB, clean the text, and update the documents."""
+    tweets = tweets_collection.find()
+    for tweet in tweets:
+        cleaned_text = preprocess_text(tweet["text"])
+        tweets_collection.update_one(
+            {"_id": tweet["_id"]},
+            {"$set": {"text": cleaned_text}}
+        )
+        print(f"Processed tweet from {tweet['user_name']}.")
+
+if __name__ == "__main__":
+    preprocess_tweets()
+    print("Data preprocessing complete.")

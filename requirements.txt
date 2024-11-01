@@ -1,0 +1,9 @@
+flask
+transformers
+pymongo
+networkx
+scikit-learn
+scipy
+numpy
+pandas
+tweepy

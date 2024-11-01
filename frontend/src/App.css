@@ -1,0 +1,38 @@
+.App {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .search-section {
+    margin: 20px;
+  }
+  
+  .chart-section, .network-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .tweet-list {
+    max-width: 800px;
+    margin: auto;
+    text-align: left;
+    padding: 20px;
+  }
+  
+  .tweet {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .tweet strong {
+    color: #555;
+  }
+  
+  input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+    width: 300px;
+  }
+  
